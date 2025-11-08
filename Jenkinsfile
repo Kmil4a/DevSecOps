@@ -15,14 +15,9 @@ pipeline {
         stage('Security Scan') {
             steps {
                 echo 'Instalando herramientas de seguridad...'
-                // Crear un entorno virtual para evitar el error de sistema administrado
-                sh '''
-                    python3 -m venv venv
-                    . venv/bin/activate
-                    pip install --upgrade pip
-                    pip install -r requirements.txt
-                    bandit -r . || true
-                '''
+                sh 'pip install -r requirements.txt --break-system-packages'
+                echo 'Ejecutando análisis estático con Bandit...'
+                sh 'bandit -r . || true'
             }
         }
     }
