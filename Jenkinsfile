@@ -15,9 +15,17 @@ pipeline {
         stage('Security Scan') {
             steps {
                 echo 'Instalando herramientas de seguridad...'
-                sh 'pip install -r requirements.txt --break-system-packages'
-                echo 'Ejecutando análisis estático con Bandit...'
-                sh 'bandit -r . || true'
+                sh '''
+                    # Crear entorno virtual
+                    python3 -m venv venv
+                    # Activar entorno
+                    . venv/bin/activate
+                    # Actualizar pip y dependencias
+                    pip install --upgrade pip
+                    pip install -r requirements.txt
+                    # Ejecutar bandit desde el entorno
+                    bandit -r . || true
+                '''
             }
         }
     }
