@@ -18,12 +18,13 @@ pipeline {
                 sh '''
                     # Crear entorno virtual
                     python3 -m venv venv
-                    # Activar entorno
                     . venv/bin/activate
                     # Actualizar pip y dependencias
                     pip install --upgrade pip
                     pip install -r requirements.txt
-                    # Ejecutar bandit desde el entorno
+                    # Instalar pbr (dependencia requerida por Bandit)
+                    pip install pbr
+                    # Ejecutar Bandit
                     bandit -r . || true
                 '''
             }
